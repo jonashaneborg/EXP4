@@ -15,7 +15,7 @@ public class TCPPutRequest {
 
 	public static void main(String[] args) {
 
-		Todo todo = new Todo("Go gym", "Get strong");
+		Todo todo = new Todo("1", "Go gym", "Get strong");
 
 		try (Socket s = new Socket(host, port)) {
 

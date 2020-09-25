@@ -8,6 +8,7 @@ import okhttp3.Request;
 import okhttp3.RequestBody;
 import okhttp3.Response;
 
+
 public class PostRequest {
 
     public static final MediaType JSON
@@ -15,7 +16,7 @@ public class PostRequest {
 
     public static void main(String[] args) {
 
-        Todo todo = new Todo();
+        Todo todo = new Todo("2", "post", "posted");
 
         OkHttpClient client = new OkHttpClient();
 

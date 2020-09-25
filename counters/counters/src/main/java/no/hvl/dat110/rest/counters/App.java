@@ -1,48 +1,47 @@
 package no.hvl.dat110.rest.counters;
 
-import static spark.Spark.after;
-import static spark.Spark.get;
-import static spark.Spark.port;
-import static spark.Spark.put;
-
 import com.google.gson.Gson;
+
+import static spark.Spark.*;
 
 /**
  * Hello world!
- *
  */
 public class App {
-	
-	static Todo todo = null;
-	
+
+	static TodoService todoService = new TodoService();
+
 	public static void main(String[] args) {
 
-		if (args.length > 0) {
+		if (args.length > 0)
 			port(Integer.parseInt(args[0]));
-		} else {
+		else
 			port(8080);
-		}
 
-		todo = new Todo();
-		todo.setDescription("Go gym");
-		todo.setSummary("Get strong");
-
-		
 		after((req, res) -> {
-  		  res.type("application/json");
-  		});
-		
-        get("/todo", (req, res) -> todo.toJson());
-               
-        put("/todo", (req,res) -> {
+			res.type("application/json");
+		});
 
-        	Gson gson = new Gson();
+		get("/todo", (req, res) -> new Gson().toJsonTree(todoService.getTodos()));
+		get("/todo/:id", (req, res) -> new Gson().toJson(todoService.getTodo(req.params(":id"))));
+		delete("/todo/:id", (req, res) -> {
+			Todo todo = todoService.getTodo(req.params(":id"));
+			String json = todo.toJson();
+			todoService.deleteTodo(todo.getId());
+			return json;
+		});
+		post("/todo", (req, res) -> {
+			Todo todo = new Gson().fromJson(req.body(), Todo.class);
+			todoService.addTodo(todo);
+			return todo.toJson();
+		});
+		put("/todo/:id", (req, res) -> {
+			Todo todo = todoService.getTodo(req.params(":id"));
+			todoService.deleteTodo(todo.getId());
+			todo = new Todo("9", "putted", "putted");
+			todoService.addTodo(todo);
+			return todo.toJson();
+		});
+	}
 
-        	todo = gson.fromJson(req.body(), Todo.class);
-
-            return todo.toJson();
-
-        });
-    }
-    
 }

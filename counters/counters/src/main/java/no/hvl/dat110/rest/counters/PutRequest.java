@@ -15,7 +15,7 @@ public class PutRequest {
 	
 	public static void main(String[] args) {
 
-		Todo todo = new Todo();
+		Todo todo = new Todo("1", "put", "putted");
 		
 		OkHttpClient client = new OkHttpClient();
 
