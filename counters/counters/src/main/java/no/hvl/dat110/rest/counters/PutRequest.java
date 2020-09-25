@@ -15,13 +15,13 @@ public class PutRequest {
 	
 	public static void main(String[] args) {
 
-		Todo todo = new Todo("1", "put", "putted");
+		Todo todo = new Todo("2", "putnewtrue", "puttednew");
 		
 		OkHttpClient client = new OkHttpClient();
 
 		RequestBody body = RequestBody.create(JSON, todo.toJson());
 		
-		Request request = new Request.Builder().url("http://localhost:8080/todo").put(body).build();
+		Request request = new Request.Builder().url("http://localhost:8080/todo/" + todo.getId()).put(body).build();
 
 		System.out.println(request.toString());
 

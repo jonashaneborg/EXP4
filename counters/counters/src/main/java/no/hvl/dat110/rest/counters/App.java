@@ -4,9 +4,6 @@ import com.google.gson.Gson;
 
 import static spark.Spark.*;
 
-/**
- * Hello world!
- */
 public class App {
 
 	static TodoService todoService = new TodoService();
@@ -36,11 +33,12 @@ public class App {
 			return todo.toJson();
 		});
 		put("/todo/:id", (req, res) -> {
-			Todo todo = todoService.getTodo(req.params(":id"));
-			todoService.deleteTodo(todo.getId());
-			todo = new Todo("9", "putted", "putted");
-			todoService.addTodo(todo);
-			return todo.toJson();
+			Todo old_todo = todoService.getTodo(req.params(":id"));
+			Todo new_todo = new Gson().fromJson(req.body(), Todo.class);
+
+			todoService.addTodo(new_todo);
+			todoService.deleteTodo(old_todo.getId());
+			return new_todo.toJson();
 		});
 	}
 
